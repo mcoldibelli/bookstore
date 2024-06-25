@@ -12,16 +12,16 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
+    public List<Author> GetAll()
+    {
+        return _context.Authors.ToList();
+    }
+
     public Author Add(Author author)
     {
         _context.Authors.Add(author);
         _context.SaveChanges();
         return author;
-    }
-
-    public List<Author> GetAll()
-    {
-        return _context.Authors.ToList();
     }
 
     public Author Update(Author author, int AuthorId)

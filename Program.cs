@@ -1,4 +1,5 @@
 using bookstore.Context;
+using bookstore.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
 var app = builder.Build();
 

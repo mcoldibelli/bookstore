@@ -1,3 +1,5 @@
+using bookstore.Models;
+using bookstore.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bookstore.Controllers;
@@ -6,12 +8,19 @@ namespace bookstore.Controllers;
 [Route("[controller]")]
 public class BookController : ControllerBase
 {
+  private readonly IBookRepository _repository;
+
+  public BookController(IBookRepository repository)
+  {
+    _repository = repository;
+  }
+
   [HttpGet]
   public IActionResult GetAll()
   {
     try
     {
-      return Ok();
+      return Ok(_repository.GetAll());
     }
     catch (Exception ex)
     {
@@ -20,11 +29,11 @@ public class BookController : ControllerBase
   }
 
   [HttpPost]
-  public IActionResult Add()
+  public IActionResult Add([FromBody] Book book)
   {
     try
     {
-      return Ok();
+      return Created("", _repository.Add(book));
     }
     catch (Exception ex)
     {
@@ -33,11 +42,11 @@ public class BookController : ControllerBase
   }
 
   [HttpPut("{id}")]
-  public IActionResult Update()
+  public IActionResult Update([FromBody] Book book, int id)
   {
     try
     {
-      return Ok();
+      return Ok(_repository.Update(book, id));
     }
     catch (Exception ex)
     {
@@ -46,11 +55,12 @@ public class BookController : ControllerBase
   }
 
   [HttpDelete("{id}")]
-  public IActionResult Delete()
+  public IActionResult Delete(int id)
   {
     try
     {
-      return Ok();
+      _repository.Delete(id);
+      return NoContent();
     }
     catch (Exception ex)
     {
